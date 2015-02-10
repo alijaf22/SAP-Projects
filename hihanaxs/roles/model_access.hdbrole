@@ -1,0 +1,3 @@
+role s0009392319trial.hanatrial.hihanaxs.roles::model_access {
+	sql object s0009392319trial.hanatrial.hihanaxs:SO_CV.calculationview : SELECT;
+}

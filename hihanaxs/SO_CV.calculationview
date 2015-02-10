@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="SO_CV" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="SO_CV"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="SNWD_SO" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="EPMSAMPLEDATA" columnObjectName="SNWD_SO"/>
+    </DataSource>
+    <DataSource id="SNWD_BPA" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="EPMSAMPLEDATA" columnObjectName="SNWD_BPA"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="C1_N" joinType="leftOuter">
+      <viewAttributes>
+        <viewAttribute id="BUYER_GUID"/>
+        <viewAttribute id="COMPANY_NAME"/>
+        <viewAttribute id="GROSS_AMOUNT"/>
+        <viewAttribute id="NET_AMOUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#SNWD_SO">
+        <mapping xsi:type="Calculation:AttributeMapping" target="BUYER_GUID" source="BUYER_GUID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROSS_AMOUNT" source="GROSS_AMOUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NET_AMOUNT" source="NET_AMOUNT"/>
+      </input>
+      <input node="#SNWD_BPA">
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMPANY_NAME" source="COMPANY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="BUYER_GUID" source="NODE_KEY"/>
+      </input>
+      <joinAttribute name="BUYER_GUID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_1">
+    <attributes>
+      <attribute id="COMPANY_NAME" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EPM: Company Name"/>
+        <keyMapping columnObjectName="Join_1" columnName="COMPANY_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="GROSS_AMOUNT" order="2" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="EPM: Total Gross Amount"/>
+        <measureMapping columnObjectName="Join_1" columnName="GROSS_AMOUNT"/>
+      </measure>
+      <measure id="NET_AMOUNT" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="EPM: Total Net Amount"/>
+        <measureMapping columnObjectName="Join_1" columnName="NET_AMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="50" y="180"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>
